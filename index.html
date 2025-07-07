@@ -258,6 +258,36 @@
             const successMessage = document.getElementById('successMessage');
             const closeBtn = document.getElementById('closeBtn');
 
+            // Move button
+            function moveNoBtn() {
+                const buttonRect = noBtn.getBoundingClientRect();
+                const maxX = window.innerWidth - buttonRect.width - 20;
+                const maxY = window.innerHeight - buttonRect.height - 20;
+
+                const newX = Math.max(20, Math.random() * maxX);
+                const newY = Math.max(20, Math.random() * maxY);
+
+                noBtn.style.position = 'fixed';
+                noBtn.style.left = newX + 'px';
+                noBtn.style.top = newY + 'px';
+                noBtn.style.zIndex = '1000';
+            }
+
+            // PC: hover
+            noBtn.addEventListener('mouseenter', moveNoBtn);
+
+            // Mobile: touch
+            noBtn.addEventListener('touchstart', function(e) {
+                e.preventDefault(); // Prevent accidental click
+                moveNoBtn();
+            });
+
+            // Yes button click handler
+            yesBtn.addEventListener('click', function() {
+                successMessage.classList.remove('hidden');
+                createConfetti();
+            });
+
             // Smooth confetti creation
             function createConfetti() {
                 const colors = ['#ff4d4d', '#ffaf40', '#ffea40', '#4dff4d', '#4dffff', '#4d4dff', '#af4dff'];
@@ -289,27 +319,6 @@
                     }, i * 10); // Staggered creation for smoother effect
                 }
             }
-
-            // Yes button click handler
-            yesBtn.addEventListener('click', function() {
-                successMessage.classList.remove('hidden');
-                createConfetti();
-            });
-
-            // Smooth no button movement
-            noBtn.addEventListener('mouseenter', function() {
-                const buttonRect = this.getBoundingClientRect();
-                const maxX = window.innerWidth - buttonRect.width - 20;
-                const maxY = window.innerHeight - buttonRect.height - 20;
-                
-                const newX = Math.max(20, Math.random() * maxX);
-                const newY = Math.max(20, Math.random() * maxY);
-
-                this.style.position = 'fixed';
-                this.style.left = newX + 'px';
-                this.style.top = newY + 'px';
-                this.style.zIndex = '1000';
-            });
 
             // Close modal
             closeBtn.addEventListener('click', function() {
