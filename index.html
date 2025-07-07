@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trái Tim Xin Lỗi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .heart {
+            width: 100px;
+            height: 100px;
+            background-color: #ff4d4d;
+            position: relative;
+            transform: rotate(45deg);
+            animation: heartbeat 1.4s linear infinite;
+            box-shadow: 0 0 40px #ff4d4d;
+        }
+        
+        .heart:before, .heart:after {
+            content: '';
+            width: 100px;
+            height: 100px;
+            background-color: #ff4d4d;
+            border-radius: 50%;
+            position: absolute;
+        }
+        
+        .heart:before {
+            top: -50px;
+            left: 0;
+        }
+        
+        .heart:after {
+            top: 0;
+            left: -50px;
+        }
+        
+        @keyframes heartbeat {
+            0% { transform: rotate(45deg) scale(1); }
+            25% { transform: rotate(45deg) scale(1.1); }
+            30% { transform: rotate(45deg) scale(1.4); }
+            50% { transform: rotate(45deg) scale(1.2); }
+            70% { transform: rotate(45deg) scale(1.4); }
+            100% { transform: rotate(45deg) scale(1); }
+        }
+        
+        .message {
+            opacity: 0;
+            animation: fadeIn 2s ease-in-out forwards;
+            animation-delay: 1s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            opacity: 0;
+        }
+    </style>
+</head>
+<body class="bg-pink-100 min-h-screen flex flex-col items-center justify-center p-4 overflow-hidden">
+    <div class="text-center mb-8">
+        <h1 class="text-4xl md:text-5xl font-bold text-pink-600 mb-2">Xin Lỗi Người Đẹp ❤️</h1>
+        <p class="text-lg text-pink-800">Tớ thật lòng xin lỗi vì đã làm cậu thất vọng </p>
+    </div>
+    
+    <div class="relative mb-12">
+        <div class="heart"></div>
+        <div class="message absolute inset-0 flex items-center justify-center">
+            <span class="text-white text-xl font-bold transform -rotate-45">I'm Sorry</span>
+        </div>
+    </div>
+    
+    <div class="max-w-md bg-white rounded-xl shadow-lg p-6 text-center message">
+        <p class="text-gray-700 mb-4">Cậu có thể tha thứ cho tớ không?</p>
+        <div class="flex justify-center space-x-4">
+            <button id="yesBtn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-full transition-all transform hover:scale-105">
+                Có ❤️
+            </button>
+            <button id="noBtn" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-6 rounded-full transition-all">
+                Không
+            </button>
+        </div>
+    </div>
+    
+    <div id="successMessage" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+        <div class="bg-white p-8 rounded-xl max-w-sm text-center animate-bounce">
+            <h2 class="text-2xl font-bold text-pink-600 mb-4">Cảm ơn Trang xinh yêu! ❤️</h2>
+            <p class="text-gray-700">Tớ hứa sẽ không làm cậu thất vọng nữa nữa. Love you pặc pặc!</p>
+            <button id="closeBtn" class="mt-4 bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-6 rounded-full">
+                Đóng
+            </button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const yesBtn = document.getElementById('yesBtn');
+            const noBtn = document.getElementById('noBtn');
+            const successMessage = document.getElementById('successMessage');
+            const closeBtn = document.getElementById('closeBtn');
+            
+            // Tạo hiệu ứng confetti khi nhấn nút Có
+            yesBtn.addEventListener('click', function() {
+                successMessage.classList.remove('hidden');
+                createConfetti();
+            });
+            
+            // Hiệu ứng khi di chuột vào nút Không
+            noBtn.addEventListener('mouseover', function() {
+                const x = Math.random() * (window.innerWidth - this.offsetWidth) - 100;
+                const y = Math.random() * (window.innerHeight - this.offsetHeight) - 100;
+                
+                this.style.position = 'absolute';
+                this.style.left = x + 'px';
+                this.style.top = y + 'px';
+            });
+            
+            // Đóng thông báo
+            closeBtn.addEventListener('click', function() {
+                successMessage.classList.add('hidden');
+            });
+            
+            // Tạo confetti
+            function createConfetti() {
+                const colors = ['#ff4d4d', '#ffaf40', '#ffea40', '#4dff4d', '#4dffff', '#4d4dff', '#af4dff'];
+                
+                for (let i = 0; i < 100; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.left = Math.random() * window.innerWidth + 'px';
+                    confetti.style.top = -10 + 'px';
+                    confetti.style.borderRadius = Math.random() * 50 + '%';
+                    confetti.style.width = Math.random() * 10 + 5 + 'px';
+                    confetti.style.height = confetti.style.width;
+                    
+                    document.body.appendChild(confetti);
+                    
+                    const animationDuration = Math.random() * 3 + 2;
+                    
+                    confetti.style.animation = `fall ${animationDuration}s linear forwards`;
+                    
+                    // Tạo animation cho từng confetti
+                    const keyframes = `
+                        @keyframes fall {
+                            to {
+                                transform: translateY(${window.innerHeight + 10}px) rotate(${Math.random() * 360}deg);
+                                opacity: 0;
+                            }
+                        }
+                    `;
+                    
+                    const style = document.createElement('style');
+                    style.innerHTML = keyframes;
+                    document.head.appendChild(style);
+                    
+                    // Xóa confetti sau khi animation kết thúc
+                    setTimeout(() => {
+                        confetti.remove();
+                        style.remove();
+                    }, animationDuration * 1000);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
